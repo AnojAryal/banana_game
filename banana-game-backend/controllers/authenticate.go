@@ -76,9 +76,12 @@ func Login(c *gin.Context) {
 }
 
 func Validate(c *gin.Context) {
-	user, _ := c.Get("user")
-
+	user, exists := c.Get("user")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Hello, " + user.(string) + "you are logged in",
+		"message": "Hello, " + user.(models.User).Username + ", you are logged in",
 	})
 }

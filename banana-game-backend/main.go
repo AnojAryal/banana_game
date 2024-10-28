@@ -17,9 +17,15 @@ func init() {
 func main() {
 	r := gin.Default()
 	r.POST("/signup", controllers.SignUp)
-	r.GET("/users", controllers.SignUp)
+	r.GET("/users", controllers.GetUser)
+
+	r.POST("/game", middleware.RequireAuth, controllers.CreateGame)
+	r.GET("/game/:id", middleware.RequireAuth, controllers.GetGame)
+
 	r.POST("/login", controllers.Login)
 	r.GET("/validate", middleware.RequireAuth, controllers.Validate)
+
+	r.GET("/banana_api", middleware.RequireAuth, controllers.GetData)
 
 	r.Run()
 }

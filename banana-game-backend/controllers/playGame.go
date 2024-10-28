@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func getData(c *gin.Context) {
+func GetData(c *gin.Context) {
 	url := "https://marcconrad.com/uob/banana/api.php?out=json"
 
 	// Create an HTTP client with a timeout
