@@ -1,13 +1,13 @@
-import { Grid, GridItem } from '@chakra-ui/react';
-import Home from './components/Home';
-import NavBar from './components/NavBar';
+import { Grid, GridItem } from "@chakra-ui/react";
+import NavBar from "./components/NavBar";
+import AppRoutes from "./routes";
 
 function App() {
   return (
     <Grid
       templateAreas={{
-        base: `"navbar" "main"`, 
-        md: `"navbar navbar" "main main"` 
+        base: `"navbar" "main"`,
+        md: `"navbar navbar" "main main"`,
       }}
       gridTemplateRows="auto 1fr"
       gridTemplateColumns="1fr"
@@ -18,7 +18,7 @@ function App() {
         <NavBar />
       </GridItem>
       <GridItem area="main" as="main" w="100%" p="4">
-        <Home />
+        <AppRoutes />
       </GridItem>
     </Grid>
   );
