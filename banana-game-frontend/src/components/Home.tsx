@@ -99,7 +99,7 @@ const Home = () => {
             <Image
               src={gameData.question}
               alt="Game Question"
-              borderRadius="md"
+              borderRadius="md"  
               maxW="100%"
             />
             {chances <= 0 && (

@@ -43,7 +43,7 @@ export const useLogin = create<LoginFormState>((set) => ({
         const { access_token } = response.data;
         localStorage.setItem("accessToken", access_token);
         localStorage.setItem("email", formData.email);
-        navigate("/home");
+        navigate("/");
       } else {
         set({
           authError: "Unexpected response. Please try again later.",

@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import useSignup from "../hooks/useSignUp";
 
 interface SignupForm {
   fullName: string;
@@ -43,16 +44,27 @@ function Signup() {
   }>({});
   const navigate = useNavigate();
 
+  const { signup, loading, error } = useSignup();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Signup data:", formData);
-      navigate("/login");
+      const result = await signup({
+        fullName: formData.fullName,
+        email: formData.email,
+        username: formData.username,
+        password: formData.password,
+      });
+
+      if (result) {
+        console.log("Signup data:", result);
+        navigate("/login");
+      }
     }
   };
 
@@ -113,7 +125,6 @@ function Signup() {
                 />
               </FormControl>
             </Grid>
-
             <FormControl isRequired>
               <FormLabel htmlFor="email">Email</FormLabel>
               <Input
@@ -127,7 +138,6 @@ function Signup() {
                 size="lg"
               />
             </FormControl>
-
             <HStack spacing={6} justifyContent="center">
               <FormControl isInvalid={!!formErrors.password} isRequired>
                 <FormLabel htmlFor="password">Password</FormLabel>
@@ -186,9 +196,16 @@ function Signup() {
                 </InputGroup>
               </FormControl>
             </HStack>
-            <Button type="submit" colorScheme="teal" width="100%" size="md">
+            <Button
+              type="submit"
+              colorScheme="teal"
+              width="100%"
+              size="md"
+              isLoading={loading}
+            >
               Sign Up
             </Button>
+            {error && <Text color="red.500">{error}</Text>}{" "}
             <HStack
               width="100%"
               height="50px"
