@@ -16,11 +16,14 @@ import {
   Tooltip,
   useColorMode,
   useBreakpointValue,
+  Flex, 
+  Icon,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import useGameData from "../hooks/useGetGame";
-import { username } from "./DecodeToken";
 import { AiOutlineReload, AiFillSmile, AiFillFrown } from "react-icons/ai";
+import { username } from "./DecodeToken";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Home = () => {
   const { gameData, loading, error, refetch } = useGameData();
@@ -186,17 +189,29 @@ const Home = () => {
               </Button>
             </HStack>
 
+            <Flex justify={"end"} mt={2}>
+              {[...Array(3)].map((_, index) => (
+                <Icon
+                  as={index < chances ? FaHeart : FaRegHeart}
+                  key={index}
+                  color={index < chances ? "red.500" : "gray.300"}
+                  boxSize={5}
+                  mx={1}
+                />
+              ))}
+            </Flex>
+
+          
+
             <Progress
-              value={((3 - chances) / 3) * 100}
+              value={((0 + chances) / 3) * 100}
               size="sm"
-              colorScheme="teal"
+              colorScheme="red"
               hasStripe
               isAnimated
               mt={4}
             />
-            <Text mt={2} color={colorMode === "light" ? "gray.700" : "white"}>
-              Chances remaining: {chances}
-            </Text>
+            
 
             <Box
               mt={4}
@@ -236,7 +251,7 @@ const Home = () => {
                 <HStack spacing={4} justify="center">
                   <AiFillSmile size={50} color="green" />
                   <Text fontSize="xl" color="green.500" fontWeight="bold">
-                    Great job! You're doing awesome.
+                    Great job! Your Guess is Correct.
                   </Text>
                 </HStack>
               </Box>
