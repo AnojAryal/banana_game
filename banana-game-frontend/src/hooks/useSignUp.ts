@@ -17,7 +17,7 @@ const useSignup = () => {
   const [response, setResponse] = useState<SignupResponse | null>(null);
 
   const signup = async (formData: {
-    fullName: string;
+    full_name: string;
     email: string;
     username: string;
     password: string;

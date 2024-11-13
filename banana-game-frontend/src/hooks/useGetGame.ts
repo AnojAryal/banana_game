@@ -29,6 +29,8 @@ const useGameData = () => {
     queryKey: ["gameData"],
     queryFn: fetchGameData,
     retry: 1,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,   
   });
 
   return { gameData, loading, isError, error, refetch };

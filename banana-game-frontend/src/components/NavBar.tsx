@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Flex,
   Spacer,
@@ -14,6 +14,7 @@ import {
 import ColorModeSwitch from "./ColorModeSwitch";
 import { FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { decodeToken } from "./DecodeToken";
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -32,6 +33,20 @@ const NavBar = () => {
   const handleLogoutClick = () => setIsOpen(true);
 
   const token = localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = decodeToken(token);
+
+      if (!decodedToken || decodedToken.exp * 1000 < Date.now()) {
+        // Token is invalid or expired
+        console.warn("Token has expired or is invalid.");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("username");
+        navigate("/login");
+      }
+    }
+  }, [token, navigate]);
 
   return (
     <>
