@@ -55,7 +55,7 @@ function Signup() {
     e.preventDefault();
     if (validateForm()) {
       const result = await signup({
-        fullName: formData.fullName,
+        full_name: formData.fullName,
         email: formData.email,
         username: formData.username,
         password: formData.password,

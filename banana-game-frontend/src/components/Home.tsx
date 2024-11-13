@@ -26,25 +26,25 @@ import { username } from "./DecodeToken";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Home = () => {
-  const { gameData, loading, error, refetch } = useGameData();
-  const [guess, setGuess] = useState("");
-  const [chances, setChances] = useState(3);
-  const [logs, setLogs] = useState<string[]>([]);
-  const [motivationMessage, setMotivationMessage] = useState("");
-  const [answered, setAnswered] = useState(false);
-  const toast = useToast();
-  const { colorMode } = useColorMode();
-  const headingFontSize = useBreakpointValue({ base: "md", md: "xl" });
+  const { gameData, loading, error, refetch } = useGameData(); // **Abstraction**: Encapsulates API logic
+  const [guess, setGuess] = useState(""); // **Encapsulation**: State management for guess
+  const [chances, setChances] = useState(3); 
+  const [logs, setLogs] = useState<string[]>([]); 
+  const [motivationMessage, setMotivationMessage] = useState(""); 
+  const [answered, setAnswered] = useState(false); 
+  const toast = useToast(); 
+  const { colorMode } = useColorMode(); 
+  const headingFontSize = useBreakpointValue({ base: "md", md: "xl" }); 
 
   useEffect(() => {
     if (gameData) {
-      setGuess("");
+      setGuess(""); // Reset states when new game data arrives
       setChances(3);
       setLogs([]);
       setMotivationMessage("");
       setAnswered(false);
     }
-  }, [gameData]);
+  }, [gameData]); // **Abstraction**: Handles effect logic based on data
 
   const getMotivationMessage = (remainingChances: number) => {
     switch (remainingChances) {
@@ -64,29 +64,29 @@ const Home = () => {
     ) {
       setLogs((prevLogs) => [...prevLogs, "Correct answer!"]);
       toast({ title: "Correct!", status: "success", duration: 2000 });
-      setAnswered(true);
+      setAnswered(true); // **Encapsulation**: Update internal state
       setMotivationMessage("");
     } else {
-      setChances((prevChances) => prevChances - 1);
+      setChances((prevChances) => prevChances - 1); // **Encapsulation**: Modify internal chances state
       setLogs((prevLogs) => [...prevLogs, "Incorrect, try again."]);
       toast({ title: "Incorrect answer.", status: "error", duration: 2000 });
       setMotivationMessage(getMotivationMessage(chances - 1));
     }
-    setGuess("");
+    setGuess(""); // Reset guess
   };
 
   const handleNext = () => {
     setLogs((prevLogs) => [...prevLogs, "Skipped"]);
-    setChances(3);
-    refetch();
+    setChances(3); // Reset chances on next game
+    refetch(); // **Abstraction**: Fetch new game data
     setMotivationMessage("");
-    setAnswered(false);
+    setAnswered(false); // Reset answer status
   };
 
   if (loading) {
     return (
       <Box textAlign="center" p={5}>
-        <Spinner size="xl" />
+        <Spinner size="xl" /> {/* **Abstraction**: Abstracted loading state */}
       </Box>
     );
   }
@@ -94,7 +94,7 @@ const Home = () => {
   if (error) {
     return (
       <Box p={5}>
-        <Alert status="error">
+        <Alert status="error"> {/* **Abstraction**: Error handling with Alert */}
           <AlertIcon />
           Error: {error.message}
         </Alert>
@@ -107,7 +107,7 @@ const Home = () => {
       p={5}
       borderRadius="md"
       boxShadow="md"
-      bg={colorMode === "light" ? "transparent" : "gray.800"}
+      bg={colorMode === "light" ? "transparent" : "gray.800"} // **Abstraction**: Dynamic background based on theme
     >
       <Heading
         mb={4}
@@ -115,7 +115,7 @@ const Home = () => {
         textAlign="left"
         color={colorMode === "light" ? "gray.800" : "white"}
       >
-        {motivationMessage || `Hello ${username}, welcome to Banana Game!`}
+        {motivationMessage || `Hello ${username}, welcome to Banana Game!`} {/* **Abstraction**: Conditional dynamic message */}
       </Heading>
       {gameData ? (
         <HStack align="flex-start" spacing={8}>
@@ -146,7 +146,7 @@ const Home = () => {
                 icon={<AiOutlineReload />}
                 colorScheme="teal"
                 variant="ghost"
-                onClick={handleNext}
+                onClick={handleNext} // **Polymorphism**: Button behavior changes based on state
                 mt={3}
                 aria-label="Next question"
               />
@@ -165,7 +165,7 @@ const Home = () => {
               value={guess}
               onChange={(e) => {
                 const input = e.target.value;
-                if (/^\d*$/.test(input)) setGuess(input);
+                if (/^\d*$/.test(input)) setGuess(input); // **Encapsulation**: Input validation and state change
               }}
               bg={colorMode === "light" ? "white" : "gray.600"}
               color={colorMode === "light" ? "black" : "white"}
@@ -175,14 +175,14 @@ const Home = () => {
             <HStack spacing={4}>
               <Button
                 colorScheme="blue"
-                onClick={handleGuess}
+                onClick={handleGuess} // **Polymorphism**: Different behavior depending on state (submit guess)
                 isDisabled={!guess || chances <= 0 || answered}
               >
                 Submit
               </Button>
               <Button
                 colorScheme="gray"
-                onClick={handleNext}
+                onClick={handleNext} // **Polymorphism**: Behavior varies (next question or skip)
                 isDisabled={!answered && chances > 0}
               >
                 Next
@@ -201,8 +201,6 @@ const Home = () => {
               ))}
             </Flex>
 
-          
-
             <Progress
               value={((0 + chances) / 3) * 100}
               size="sm"
@@ -211,7 +209,6 @@ const Home = () => {
               isAnimated
               mt={4}
             />
-            
 
             <Box
               mt={4}
