@@ -55,6 +55,7 @@ func Login(c *gin.Context) {
 		"sub":       user.ID,
 		"username":  user.Username,
 		"FullName":  user.FullName,
+		"Email" : user.Email,
 		"CreatedAt": user.CreatedAt,
 		"exp":       time.Now().Add(time.Hour * 24 * 30).Unix(),
 	})
