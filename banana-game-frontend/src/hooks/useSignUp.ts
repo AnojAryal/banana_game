@@ -11,7 +11,6 @@ interface SignupError {
   message: string;
 }
 
-// Custom hook for handling signup logic, encapsulating state and API interaction.
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +27,6 @@ const useSignup = () => {
       setResponse(data);
       return data;
     } catch (err) {
-      // Polymorphism: Handles different error cases, including network or unexpected errors.
       const axiosError = err as AxiosError;
       if (axios.isAxiosError(axiosError) && axiosError.response) {
         const errorData = axiosError.response.data as SignupError;

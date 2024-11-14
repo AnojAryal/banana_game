@@ -26,7 +26,7 @@ import { username } from "./DecodeToken";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Home = () => {
-  const { gameData, loading, error, refetch } = useGameData(); // **Abstraction**: Encapsulates API logic
+  const { gameData, loading, error, refetch } = useGameData(); 
   const [guess, setGuess] = useState(""); // **Encapsulation**: State management for guess
   const [chances, setChances] = useState(3); 
   const [logs, setLogs] = useState<string[]>([]); 
@@ -38,7 +38,7 @@ const Home = () => {
 
   useEffect(() => {
     if (gameData) {
-      setGuess(""); // Reset states when new game data arrives
+      setGuess(""); 
       setChances(3);
       setLogs([]);
       setMotivationMessage("");
@@ -72,21 +72,21 @@ const Home = () => {
       toast({ title: "Incorrect answer.", status: "error", duration: 2000 });
       setMotivationMessage(getMotivationMessage(chances - 1));
     }
-    setGuess(""); // Reset guess
+    setGuess(""); 
   };
 
   const handleNext = () => {
     setLogs((prevLogs) => [...prevLogs, "Skipped"]);
-    setChances(3); // Reset chances on next game
-    refetch(); // **Abstraction**: Fetch new game data
+    setChances(3);
+    refetch();
     setMotivationMessage("");
-    setAnswered(false); // Reset answer status
+    setAnswered(false);
   };
 
   if (loading) {
     return (
       <Box textAlign="center" p={5}>
-        <Spinner size="xl" /> {/* **Abstraction**: Abstracted loading state */}
+        <Spinner size="xl" /> 
       </Box>
     );
   }
@@ -94,7 +94,7 @@ const Home = () => {
   if (error) {
     return (
       <Box p={5}>
-        <Alert status="error"> {/* **Abstraction**: Error handling with Alert */}
+        <Alert status="error">
           <AlertIcon />
           Error: {error.message}
         </Alert>
@@ -107,7 +107,7 @@ const Home = () => {
       p={5}
       borderRadius="md"
       boxShadow="md"
-      bg={colorMode === "light" ? "transparent" : "gray.800"} // **Abstraction**: Dynamic background based on theme
+      bg={colorMode === "light" ? "transparent" : "gray.800"}
     >
       <Heading
         mb={4}
@@ -115,7 +115,7 @@ const Home = () => {
         textAlign="left"
         color={colorMode === "light" ? "gray.800" : "white"}
       >
-        {motivationMessage || `Hello ${username}, welcome to Banana Game!`} {/* **Abstraction**: Conditional dynamic message */}
+        {motivationMessage || `Hello ${username}, welcome to Banana Game!`}
       </Heading>
       {gameData ? (
         <HStack align="flex-start" spacing={8}>
@@ -165,7 +165,7 @@ const Home = () => {
               value={guess}
               onChange={(e) => {
                 const input = e.target.value;
-                if (/^\d*$/.test(input)) setGuess(input); // **Encapsulation**: Input validation and state change
+                if (/^\d*$/.test(input)) setGuess(input);
               }}
               bg={colorMode === "light" ? "white" : "gray.600"}
               color={colorMode === "light" ? "black" : "white"}
@@ -182,7 +182,7 @@ const Home = () => {
               </Button>
               <Button
                 colorScheme="gray"
-                onClick={handleNext} // **Polymorphism**: Behavior varies (next question or skip)
+                onClick={handleNext}
                 isDisabled={!answered && chances > 0}
               >
                 Next
