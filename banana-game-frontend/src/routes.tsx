@@ -5,14 +5,12 @@ import NotAvailPage from "./components/NotAvailPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Signup from "./components/SignUp";
 
-
 const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/home" />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-    
 
       <Route
         path="/home"

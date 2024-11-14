@@ -10,27 +10,38 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useDisclosure,
 } from "@chakra-ui/react";
 import ColorModeSwitch from "./ColorModeSwitch";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaUser, FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { decodeToken } from "./DecodeToken";
+import Profile from "./Profile";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const {
+    isOpen: isProfileOpen,
+    onOpen: onProfileOpen,
+    onClose: onProfileClose,
+  } = useDisclosure();
+  const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const cancelRef = useRef<HTMLButtonElement>(null);
 
-  const onClose = () => setIsOpen(false);
+  const onCloseLogout = () => setIsLogoutOpen(false);
 
   const onConfirmLogout = () => {
-    onClose();
+    onCloseLogout();
     localStorage.removeItem("accessToken");
     localStorage.removeItem("username");
     navigate("/login");
   };
 
-  const handleLogoutClick = () => setIsOpen(true);
+  const handleLogoutClick = () => setIsLogoutOpen(true);
 
   const token = localStorage.getItem("accessToken");
 
@@ -39,7 +50,6 @@ const NavBar = () => {
       const decodedToken = decodeToken(token);
 
       if (!decodedToken || decodedToken.exp * 1000 < Date.now()) {
-        // Token is invalid or expired
         console.warn("Token has expired or is invalid.");
         localStorage.removeItem("accessToken");
         localStorage.removeItem("username");
@@ -54,19 +64,32 @@ const NavBar = () => {
         <Spacer />
         <ColorModeSwitch />
         {token && (
-          <IconButton
-            aria-label="Logout"
-            icon={<FaSignOutAlt />}
-            onClick={handleLogoutClick}
-            ml={4}
-          />
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              icon={<FaBars />}
+              variant="outline"
+              ml={4}
+              aria-label="Options"
+            />
+            <MenuList>
+              <MenuItem icon={<FaUser />} onClick={onProfileOpen}>
+                Profile
+              </MenuItem>
+              <MenuItem icon={<FaSignOutAlt />} onClick={handleLogoutClick}>
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
         )}
       </Flex>
 
+      <Profile isOpen={isProfileOpen} onClose={onProfileClose} />
+
       <AlertDialog
-        isOpen={isOpen}
+        isOpen={isLogoutOpen}
         leastDestructiveRef={cancelRef}
-        onClose={onClose}
+        onClose={onCloseLogout}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
@@ -77,7 +100,7 @@ const NavBar = () => {
             <AlertDialogBody>Are you sure you want to log out?</AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
+              <Button ref={cancelRef} onClick={onCloseLogout}>
                 Cancel
               </Button>
               <Button colorScheme="red" onClick={onConfirmLogout} ml={3}>
