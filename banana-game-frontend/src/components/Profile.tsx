@@ -16,6 +16,15 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FaEnvelope, FaGamepad, FaClock } from "react-icons/fa";
+import { email, fullname, username } from "./DecodeToken";
+
+interface ProfileData {
+  FullName: string;
+  username: string;
+  Email: string;
+  totalGamesPlayed: number;
+  lastPlayed: string;
+}
 
 interface ProfileProps {
   isOpen: boolean;
@@ -23,23 +32,24 @@ interface ProfileProps {
 }
 
 const Profile = ({ isOpen, onClose }: ProfileProps) => {
-  const [profileData, setProfileData] = useState({
-    fullName: "",
+  const [profileData, setProfileData] = useState<ProfileData>({
+    FullName: "",
     username: "",
-    email: "",
+    Email: "",
     totalGamesPlayed: 0,
     lastPlayed: "",
   });
 
   useEffect(() => {
     const fetchUserProfile = async () => {
-      const storedData = {
-        fullName: "John Doe",
-        username: "johndoe123",
-        email: "johndoe@example.com",
-        totalGamesPlayed: 25,
-        lastPlayed: "2024-11-13",
+      const storedData: ProfileData = {
+        FullName: fullname as string,
+        username: username as string,
+        Email: email as string,
+        totalGamesPlayed: 25, 
+        lastPlayed: "2024-11-13", 
       };
+
       setProfileData(storedData);
     };
     fetchUserProfile();
@@ -55,9 +65,9 @@ const Profile = ({ isOpen, onClose }: ProfileProps) => {
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing={4} align="center">
-            <Avatar size="xl" name={profileData.fullName} mb={2} />
+            <Avatar size="xl" name={profileData.FullName} mb={2} />
             <Text fontSize="lg" fontWeight="semibold">
-              {profileData.fullName}
+              {profileData.FullName}
             </Text>
             <Text fontSize="sm" color="gray.500">
               {profileData.username}
@@ -68,7 +78,7 @@ const Profile = ({ isOpen, onClose }: ProfileProps) => {
               <HStack>
                 <Icon as={FaEnvelope} color="blue.500" />
                 <Text fontSize="md">
-                  <strong>Email:</strong> {profileData.email}
+                  <strong>Email:</strong> {profileData.Email}
                 </Text>
               </HStack>
               <HStack>

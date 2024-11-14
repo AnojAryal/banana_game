@@ -2,6 +2,8 @@ export interface DecodedToken {
   exp: number;
   iat: number;
   username: string;
+  FullName: string;
+  Email: string;
 }
 
 // Helper function to decode base64url to a JSON string
@@ -51,9 +53,9 @@ const isTokenExpired = (decodedToken: DecodedToken): boolean => {
   return decodedToken.exp * 1000 < Date.now();
 };
 
-// Retrieve the token from localStorage and decode it
 export const token = localStorage.getItem("accessToken");
 export const decodedToken = decodeToken(token || "");
 
-// Retrieve the username if token is valid
 export const username = decodedToken ? decodedToken.username : null;
+export const fullname = decodedToken ? decodedToken.FullName : null;
+export const email = decodedToken ? decodedToken.Email : null;
