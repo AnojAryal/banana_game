@@ -11,7 +11,6 @@ interface Game {
 const useGameData = () => {
   const token = localStorage.getItem("accessToken");
 
-  // Abstraction: Hides the API request details, only exposing the fetched data.
   const fetchGameData = async () => {
     const response: AxiosResponse<Game> = await apiClient.get("/banana_api", {
       headers: {
@@ -21,7 +20,6 @@ const useGameData = () => {
     return response.data;
   };
 
-  // Encapsulation: The hook manages query states (data, loading, error) internally.
   const {
     data: gameData,
     isLoading: loading,
@@ -36,7 +34,6 @@ const useGameData = () => {
     refetchOnReconnect: false,
   });
 
-  // Return encapsulated states to be used in components.
   return { gameData, loading, isError, error, refetch };
 };
 

@@ -27,7 +27,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Home = () => {
   const { gameData, loading, error, refetch } = useGameData(); 
-  const [guess, setGuess] = useState(""); // **Encapsulation**: State management for guess
+  const [guess, setGuess] = useState(""); 
   const [chances, setChances] = useState(3); 
   const [logs, setLogs] = useState<string[]>([]); 
   const [motivationMessage, setMotivationMessage] = useState(""); 
@@ -44,7 +44,7 @@ const Home = () => {
       setMotivationMessage("");
       setAnswered(false);
     }
-  }, [gameData]); // **Abstraction**: Handles effect logic based on data
+  }, [gameData]);
 
   const getMotivationMessage = (remainingChances: number) => {
     switch (remainingChances) {
@@ -64,10 +64,10 @@ const Home = () => {
     ) {
       setLogs((prevLogs) => [...prevLogs, "Correct answer!"]);
       toast({ title: "Correct!", status: "success", duration: 2000 });
-      setAnswered(true); // **Encapsulation**: Update internal state
+      setAnswered(true);
       setMotivationMessage("");
     } else {
-      setChances((prevChances) => prevChances - 1); // **Encapsulation**: Modify internal chances state
+      setChances((prevChances) => prevChances - 1);
       setLogs((prevLogs) => [...prevLogs, "Incorrect, try again."]);
       toast({ title: "Incorrect answer.", status: "error", duration: 2000 });
       setMotivationMessage(getMotivationMessage(chances - 1));
@@ -146,7 +146,7 @@ const Home = () => {
                 icon={<AiOutlineReload />}
                 colorScheme="teal"
                 variant="ghost"
-                onClick={handleNext} // **Polymorphism**: Button behavior changes based on state
+                onClick={handleNext} 
                 mt={3}
                 aria-label="Next question"
               />
@@ -175,7 +175,7 @@ const Home = () => {
             <HStack spacing={4}>
               <Button
                 colorScheme="blue"
-                onClick={handleGuess} // **Polymorphism**: Different behavior depending on state (submit guess)
+                onClick={handleGuess} 
                 isDisabled={!guess || chances <= 0 || answered}
               >
                 Submit

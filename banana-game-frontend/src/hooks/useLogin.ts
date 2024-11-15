@@ -21,7 +21,6 @@ export const useLogin = create<LoginFormState>((set) => ({
   login: async (formData, navigate) => {
     const errors: { [key: string]: string } = {};
 
-    // Abstraction: Validates form data without exposing the logic to the parent component.
     if (!formData.email) errors.email = "Email is required";
     if (!formData.password) errors.password = "Password is required";
 
@@ -41,7 +40,7 @@ export const useLogin = create<LoginFormState>((set) => ({
         headers: { "Content-Type": "application/json" },
       });
 
-      // Polymorphism: Behaves differently depending on the response status.
+  
       if (response.status === 200) {
         const { access_token } = response.data;
         localStorage.setItem("accessToken", access_token);
@@ -53,7 +52,7 @@ export const useLogin = create<LoginFormState>((set) => ({
         });
       }
     } catch (error: unknown) {
-      // Polymorphism: Handles different types of errors based on the response structure.
+      
       const err = error as AxiosError<{ detail: string }>;
       console.error(err);
       set({
