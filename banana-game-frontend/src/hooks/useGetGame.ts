@@ -7,7 +7,6 @@ interface Game {
   solution: number;
 }
 
-
 const useGameData = () => {
   const token = localStorage.getItem("accessToken");
 
